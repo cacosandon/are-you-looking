@@ -8,7 +8,7 @@ from utils import setup, read_vocab, Tokenizer, set_tb_logger, is_experiment, pa
 from trainer import PanoSeq2SeqTrainer
 from agents import PanoSeq2SeqAgent
 from models import EncoderRNN, SelfMonitoring, SpeakerFollowerBaseline, Regretful
-
+import sys
 
 parser = argparse.ArgumentParser(description='PyTorch for Matterport3D Agent with panoramic view and action')
 # General options
@@ -238,7 +238,6 @@ def main(opts):
     val_envs = {split: (R2RPanoBatch(opts, feature, img_spec, batch_size=opts.batch_size,
                                      splits=[split], tokenizer=tok), Evaluation([split]))
                 for split in ['val_seen', 'val_unseen']}
-
     # create agent
     agent_kwargs = {
         'opts': opts,
@@ -261,7 +260,7 @@ def main(opts):
 
     # set up tensorboard logger
     tb_logger = set_tb_logger(opts.log_dir, opts.exp_name, opts.resume)
-
+    sys.stdout.flush()
     best_success_rate = best_success_rate if opts.resume else 0.0
     for epoch in range(opts.start_epoch, opts.max_num_epochs + 1):
         trainer.train(epoch, train_env, tb_logger)
@@ -278,6 +277,7 @@ def main(opts):
                 is_best = success_rate_compare >= best_success_rate
                 best_success_rate = max(success_rate_compare, best_success_rate)
                 print("--> Highest val_unseen success rate: {}".format(best_success_rate))
+		sys.stdout.flush()
 
                 # save the model if it is the best so far
                 save_checkpoint({

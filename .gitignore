@@ -24,3 +24,4 @@ tensorboard_logs
 
 /tasks/R2R-pano/demo.py
 /r2r
+/slurm_log
