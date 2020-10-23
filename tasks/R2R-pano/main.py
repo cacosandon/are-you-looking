@@ -144,6 +144,8 @@ def main(opts):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    print(f"Usando {device} :)")
+
     # create a batch training environment that will also preprocess text
     vocab = read_vocab(opts.train_vocab)
     tok = Tokenizer(opts.remove_punctuation == 1, opts.reversed == 1, vocab=vocab, encoding_length=opts.max_cap_length)

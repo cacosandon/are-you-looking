@@ -26,19 +26,20 @@ def load_features(feature_store):
         features = {}
         with open(feature_store, "r") as tsv_in_file:
             print('Reading image features file %s' % feature_store)
-            reader = list(csv.DictReader(tsv_in_file, delimiter='\t', fieldnames=tsv_fieldnames))
-            total_length = len(reader)
+            reader = csv.DictReader(tsv_in_file, delimiter='\t', fieldnames=tsv_fieldnames)
 
             print('Loading image features ..')
-            for i, item in enumerate(reader):
+            i = 0
+            for item in reader:
                 image_h = int(item['image_h'])
                 image_w = int(item['image_w'])
                 vfov = int(item['vfov'])
                 long_id = _make_id(item['scanId'], item['viewpointId'])
                 features[long_id] = np.frombuffer(base64.b64decode(item['features']),
                                                        dtype=np.float32).reshape((36, 2048))
-                print_progress(i + 1, total_length, prefix='Progress:',
+                print_progress(i + 1, 300000, prefix='Progress:',
                                suffix='Complete', bar_length=50)
+                i += 1
     else:
         print('Image features not provided')
         features = None
