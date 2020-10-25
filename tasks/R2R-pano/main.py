@@ -277,7 +277,7 @@ def main(opts):
                 is_best = success_rate_compare >= best_success_rate
                 best_success_rate = max(success_rate_compare, best_success_rate)
                 print("--> Highest val_unseen success rate: {}".format(best_success_rate))
-		sys.stdout.flush()
+                sys.stdout.flush()
 
                 # save the model if it is the best so far
                 save_checkpoint({
