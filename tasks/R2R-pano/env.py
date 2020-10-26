@@ -30,14 +30,14 @@ def load_features(feature_store):
             total_length = len(reader)
 
             print('Loading image features ..')
-            for i, item in reader:
+            for i, item in enumerate(reader):
                 image_h = int(item['image_h'])
                 image_w = int(item['image_w'])
                 vfov = int(item['vfov'])
                 long_id = _make_id(item['scanId'], item['viewpointId'])
                 # features[long_id] = np.frombuffer(base64.b64decode(item['features']),
                 #                                        dtype=np.float32).reshape((36, 2048))
-                
+
                 # Blind module
                 features[long_id] = np.zeros((36, 2048), dtype=np.float32)
                 print_progress(i + 1, total_length, prefix='Progress:',
