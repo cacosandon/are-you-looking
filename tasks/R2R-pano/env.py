@@ -129,8 +129,8 @@ class R2RPanoBatch():
                         else:
                             new_item['divid_instr_encoding'] = tokenizer.divide_instr_victor(instr, opts.max_sentence_segs)
                 self.data.append(new_item)
-            print_progress(i + 1, total_length, prefix='Progress:',
-                               suffix='Complete', bar_length=50)
+            # print_progress(i + 1, total_length, prefix='Progress:',
+            #                    suffix='Complete', bar_length=50)
 
         self.scans = set(self.scans)
         self.splits = splits
