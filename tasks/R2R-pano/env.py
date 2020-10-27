@@ -40,8 +40,8 @@ def load_features(feature_store):
 
                 # Blind module
                 features[long_id] = np.zeros((36, 2048), dtype=np.float32)
-                print_progress(i + 1, total_length, prefix='Progress:',
-                               suffix='Complete', bar_length=50)
+                # print_progress(i + 1, total_length, prefix='Progress:',
+                #                suffix='Complete', bar_length=50)
     else:
         print('Image features not provided')
         features = None
