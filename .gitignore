@@ -22,6 +22,9 @@ tensorboard_logs
 /tasks/R2R-pano/results/*.json
 /tasks/R2R-pano/results/*/*.json
 
+/modify-subjects/chunks/*.json
+/modify-subjects/nouns/*.json
+
 /tasks/R2R-pano/demo.py
 /r2r
 /slurm_log
