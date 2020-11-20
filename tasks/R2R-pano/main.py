@@ -20,9 +20,9 @@ parser.add_argument('--exp_name_secondary', default='', type=str,
                         It decides where to store samples and models')
 
 # Dataset options
-parser.add_argument('--train_vocab', default='tasks/R2R-pano/data',
+parser.add_argument('--instructions', default='tasks/R2R-pano/data',
                     type=str, help='path to training vocab')
-parser.add_argument('--instructions', default='tasks/R2R-pano/data/train_vocab.txt',
+parser.add_argument('--train_vocab', default='tasks/R2R-pano/data/train_vocab.txt',
                     type=str, help='path to training vocab')
 parser.add_argument('--trainval_vocab', default='tasks/R2R-pano/data/trainval_vocab.txt',
                     type=str, help='path to training and validation vocab')
