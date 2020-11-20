@@ -105,7 +105,7 @@ class R2RPanoBatch():
 
         print('Loading {} dataset'.format(splits[0]))
 
-        json_data = load_datasets(splits)
+        json_data = load_datasets(splits, self.opts)
         total_length = len(json_data)
 
         # iteratively load data into system memory

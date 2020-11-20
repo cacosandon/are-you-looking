@@ -13,13 +13,13 @@ from utils import load_datasets, load_nav_graphs
 class Evaluation(object):
     ''' Results submission format:  [{'instr_id': string, 'trajectory':[(viewpoint_id, heading_rads, elevation_rads),] } ] '''
 
-    def __init__(self, splits):
+    def __init__(self, splits, opts):
         self.error_margin = 3.0
         self.splits = splits
         self.gt = {}
         self.instr_ids = []
         self.scans = []
-        for item in load_datasets(splits):
+        for item in load_datasets(splits, opts):
             self.gt[item['path_id']] = item
             self.scans.append(item['scan'])
             self.instr_ids += ['%d_%d' % (item['path_id'],i) for i in range(3)]
