@@ -20,6 +20,8 @@ parser.add_argument('--exp_name_secondary', default='', type=str,
                         It decides where to store samples and models')
 
 # Dataset options
+parser.add_argument('--instructions', default='tasks/R2R-pano/data',
+                    type=str, help='path to training vocab')
 parser.add_argument('--train_vocab', default='tasks/R2R-pano/data/train_vocab.txt',
                     type=str, help='path to training vocab')
 parser.add_argument('--trainval_vocab', default='tasks/R2R-pano/data/trainval_vocab.txt',
@@ -211,7 +213,7 @@ def main(opts):
     if opts.test_submission:
         assert opts.resume, 'The model was not resumed before running for submission.'
         test_env = ('test', (R2RPanoBatch(opts, feature, img_spec, batch_size=opts.batch_size,
-                                 splits=['test'], tokenizer=tok), Evaluation(['test'])))
+                                 splits=['test'], tokenizer=tok), Evaluation(['test'], opts)))
         agent_kwargs = {
             'opts': opts,
             'env': test_env[1][0],
@@ -236,7 +238,7 @@ def main(opts):
                                  splits=['synthetic'], tokenizer=tok)
 
     val_envs = {split: (R2RPanoBatch(opts, feature, img_spec, batch_size=opts.batch_size,
-                                     splits=[split], tokenizer=tok), Evaluation([split]))
+                                     splits=[split], tokenizer=tok), Evaluation([split], opts))
                 for split in ['val_seen', 'val_unseen']}
     # create agent
     agent_kwargs = {

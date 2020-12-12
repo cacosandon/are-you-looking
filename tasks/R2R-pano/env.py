@@ -26,20 +26,23 @@ def load_features(feature_store):
         features = {}
         with open(feature_store, "r") as tsv_in_file:
             print('Reading image features file %s' % feature_store)
-            reader = csv.DictReader(tsv_in_file, delimiter='\t', fieldnames=tsv_fieldnames)
+            reader = list(csv.DictReader(tsv_in_file, delimiter='\t', fieldnames=tsv_fieldnames))
+            total_length = len(reader)
 
             print('Loading image features ..')
-            i = 0
-            for item in reader:
+            for i, item in enumerate(reader):
                 image_h = int(item['image_h'])
                 image_w = int(item['image_w'])
                 vfov = int(item['vfov'])
                 long_id = _make_id(item['scanId'], item['viewpointId'])
                 features[long_id] = np.frombuffer(base64.b64decode(item['features']),
                                                        dtype=np.float32).reshape((36, 2048))
-                print_progress(i + 1, 300000, prefix='Progress:',
-                               suffix='Complete', bar_length=50)
-                i += 1
+
+                # Blind module
+                # features[long_id] = np.zeros((36, 2048), dtype=np.float32)
+                
+                # print_progress(i + 1, total_length, prefix='Progress:',
+                #                suffix='Complete', bar_length=50)
     else:
         print('Image features not provided')
         features = None
@@ -102,7 +105,7 @@ class R2RPanoBatch():
 
         print('Loading {} dataset'.format(splits[0]))
 
-        json_data = load_datasets(splits)
+        json_data = load_datasets(splits, self.opts)
         total_length = len(json_data)
 
         # iteratively load data into system memory
@@ -127,8 +130,8 @@ class R2RPanoBatch():
                         else:
                             new_item['divid_instr_encoding'] = tokenizer.divide_instr_victor(instr, opts.max_sentence_segs)
                 self.data.append(new_item)
-            print_progress(i + 1, total_length, prefix='Progress:',
-                               suffix='Complete', bar_length=50)
+            # print_progress(i + 1, total_length, prefix='Progress:',
+            #                    suffix='Complete', bar_length=50)
 
         self.scans = set(self.scans)
         self.splits = splits

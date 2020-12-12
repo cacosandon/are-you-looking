@@ -141,7 +141,7 @@ class PanoSeq2SeqTrainer():
 
         # load dataset path for computing ground truth distance
         self.agent.gt = {}
-        for item in load_datasets([env_name]):
+        for item in load_datasets([env_name], self.opts):
             self.agent.gt[item['path_id']] = item
         val_iters_epoch = math.ceil(len(env.data) / self.opts.batch_size)
         self.agent.results = {}

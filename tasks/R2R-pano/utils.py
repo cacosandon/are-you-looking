@@ -23,9 +23,9 @@ def setup(opts, seed=1):
     torch.cuda.manual_seed(seed)
     # Check for vocabs
     if not os.path.exists(opts.train_vocab):
-        write_vocab(build_vocab(splits=['train']), opts.train_vocab)
+        write_vocab(build_vocab(splits=['train']), opts.train_vocab, opts=opts)
     if not os.path.exists(opts.trainval_vocab):
-        write_vocab(build_vocab(splits=['train', 'val_seen', 'val_unseen']), opts.trainval_vocab)
+        write_vocab(build_vocab(splits=['train', 'val_seen', 'val_unseen']), opts.trainval_vocab, opts=opts)
 
 
 def load_nav_graphs(scans):
@@ -58,13 +58,14 @@ def load_nav_graphs(scans):
 
 def load_datasets(splits, opts=None):
     data = []
+    path = opts.instructions
     for split in splits:
         assert split in ['train', 'val_seen', 'val_unseen', 'test', 'train_val_seen', 'synthetic']
         if split == 'synthetic':
-            with open('tasks/R2R-pano/data/R2R_literal_speaker_data_augmentation_paths.json') as f:
+            with open(f'{path}/R2R_literal_speaker_data_augmentation_paths.json') as f:
                 data += json.load(f)
         else:
-            with open('tasks/R2R-pano/data/R2R_%s.json' % split) as f:
+            with open(f'{path}/R2R_%s.json' % split) as f:
                 data += json.load(f)
 
     return data
@@ -135,11 +136,11 @@ class Tokenizer(object):
         return " ".join(sentence)
 
 
-def build_vocab(splits=['train'], min_count=5, start_vocab=base_vocab):
+def build_vocab(splits=['train'], min_count=5, start_vocab=base_vocab, opts=None):
     """ Build a vocab, starting with base vocab containing a few useful tokens. """
     count = Counter()
     t = Tokenizer()
-    data = load_datasets(splits)
+    data = load_datasets(splits, opts)
     for item in data:
         for instr in item['instructions']:
             count.update(t.split_sentence(instr))
