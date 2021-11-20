@@ -46,6 +46,8 @@ parser.add_argument('--min_lr', default=1e-6, type=float,
 parser.add_argument('--seed', default=5, type=int, help='random seed')
 parser.add_argument('--train_data_augmentation', default=0, type=int,
                     help='Training with the synthetic data generated with speaker')
+parser.add_argument('--path_data_augmentation', default='R2R_literal_speaker_data_augmentation_paths.json', type=str,
+                    help='Path of synthetic instructions')
 parser.add_argument('--epochs_data_augmentation', default=5, type=int,
                     help='Number of epochs for training with data augmentation first')
 
