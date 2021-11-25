@@ -65,8 +65,12 @@ def load_datasets(splits, opts=None):
             with open(f'{path}/{opts.path_data_augmentation}') as f:
                 data += json.load(f)
         else:
-            with open(f'{path}/R2R_%s.json' % split) as f:
-                data += json.load(f)
+            if split == 'train':
+                with open(f'{path}/R2R_%s.json' % opts.train_instructions) as f:
+                    data += json.load(f)
+            else:
+                with open(f'{path}/R2R_%s.json' % split) as f:
+                    data += json.load(f)
 
     return data
 

@@ -35,6 +35,7 @@ parser.add_argument('--batch_size', default=4, type=int)
 parser.add_argument('--learning_rate', default=1e-4, type=float)
 parser.add_argument('--train_iters_epoch', default=200, type=int,
                     help='number of iterations per epoch')
+parser.add_argument('--train_instructions', default='train', type=str)
 parser.add_argument('--max_num_epochs', default=300, type=int,
                     help='number of total epochs to run')
 parser.add_argument('--eval_every_epochs', default=1, type=int,
