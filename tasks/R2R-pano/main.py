@@ -304,4 +304,5 @@ def main(opts):
 
 if __name__ == '__main__':
     opts = parser.parse_args()
+    print(opts)
     main(opts)
