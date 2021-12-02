@@ -145,7 +145,7 @@ parser.add_argument('--log_dir',
 
 def main(opts):
     # set manual_seed and build vocab
-    print(opts)
+    print(opts, flush=True)
 
     setup(opts, opts.seed)
 
