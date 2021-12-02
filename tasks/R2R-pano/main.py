@@ -145,6 +145,8 @@ parser.add_argument('--log_dir',
 
 def main(opts):
     # set manual_seed and build vocab
+    print(opts)
+
     setup(opts, opts.seed)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -304,5 +306,4 @@ def main(opts):
 
 if __name__ == '__main__':
     opts = parser.parse_args()
-    print(opts)
     main(opts)
