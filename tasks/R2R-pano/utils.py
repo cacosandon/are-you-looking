@@ -60,7 +60,7 @@ def load_datasets(splits, opts=None):
     data = []
     path = opts.instructions
     for split in splits:
-        assert split in ['train', 'val_seen', 'val_unseen', 'test', 'train_val_seen', 'synthetic']
+        assert split in ['train', 'val_seen', 'val_unseen', 'craft_seen', 'craft_unseen', 'test', 'train_val_seen', 'synthetic']
         if split == 'synthetic':
             with open(f'{path}/{opts.path_data_augmentation}') as f:
                 data += json.load(f)

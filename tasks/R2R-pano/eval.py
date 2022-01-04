@@ -19,10 +19,12 @@ class Evaluation(object):
         self.gt = {}
         self.instr_ids = []
         self.scans = []
+        instructions_qty = 3
         for item in load_datasets(splits, opts):
             self.gt[item['path_id']] = item
             self.scans.append(item['scan'])
-            self.instr_ids += ['%d_%d' % (item['path_id'],i) for i in range(3)]
+            instructions_qty = len(item['instructions'])
+            self.instr_ids += ['%d_%d' % (item['path_id'],i) for i in range(instructions_qty)]
         self.scans = set(self.scans)
         self.instr_ids = set(self.instr_ids)
         self.graphs = load_nav_graphs(self.scans)
@@ -41,7 +43,7 @@ class Evaluation(object):
         return near_id
 
     def _score_item(self, instr_id, path):
-        ''' Calculate error based on the final position in trajectory, and also 
+        ''' Calculate error based on the final position in trajectory, and also
             the closest position (oracle stopping rule). '''
         gt = self.gt[int(instr_id.split('_')[0])]
         start = gt['path'][0]
@@ -71,7 +73,7 @@ class Evaluation(object):
     def score(self, output_file):
         ''' Evaluate each agent trajectory based on how close it got to the goal location '''
         self.scores = defaultdict(list)
-        instr_ids = set(self.instr_ids) 
+        instr_ids = set(self.instr_ids)
         with open(output_file) as f:
             for item in json.load(f):
                 # Check against expected ids

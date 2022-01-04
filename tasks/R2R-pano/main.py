@@ -127,6 +127,8 @@ parser.add_argument('--eval_only', default=0, type=int,
                     help='No training. Resume from a model and run evaluation')
 parser.add_argument('--test_submission', default=0, type=int,
                     help='No training. Resume from a model and run testing for submission')
+parser.add_argument('--craft_eval', default=0, type=int,
+                    help='No training. Resume froma model and run evaluation on craft also')
 
 # Output options
 parser.add_argument('--results_dir',
@@ -242,9 +244,13 @@ def main(opts):
         train_env = R2RPanoBatch(opts, feature, img_spec, batch_size=opts.batch_size, seed=opts.seed,
                                  splits=['synthetic'], tokenizer=tok)
 
+    val_craft_splits = ['craft_seen', 'craft_unseen']
+    val_splits = ['val_seen', 'val_unseen']
+    if opts.craft_eval:
+        val_splits += val_craft_splits
     val_envs = {split: (R2RPanoBatch(opts, feature, img_spec, batch_size=opts.batch_size,
                                      splits=[split], tokenizer=tok), Evaluation([split], opts))
-                for split in ['val_seen', 'val_unseen']}
+                for split in val_splits}
     # create agent
     agent_kwargs = {
         'opts': opts,
