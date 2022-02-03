@@ -85,6 +85,8 @@ parser.add_argument('--fix_action_ended', default=1, type=int,
                     help='Action set to 0 if ended. This prevent the model keep getting loss from logit after ended')
 parser.add_argument('--monitor_sigmoid', default=0, type=int,
                     help='Use Sigmoid function for progress monitor instead of Tanh')
+parser.add_argument('--blind', default=0, type=int,
+                    help='Use random values for visual features')
 
 # Agent rollback options
 parser.add_argument('--prevent_oscillation', default=1, type=int,
@@ -215,7 +217,7 @@ def main(opts):
     if opts.exp_name_secondary:
         opts.exp_name += opts.exp_name_secondary
 
-    feature, img_spec = load_features(opts.img_feat_dir)
+    feature, img_spec = load_features(opts.img_feat_dir, opts.blind)
 
     if opts.test_submission:
         assert opts.resume, 'The model was not resumed before running for submission.'

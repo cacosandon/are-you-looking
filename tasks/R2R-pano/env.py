@@ -16,7 +16,7 @@ from utils import load_datasets, load_nav_graphs, print_progress, is_experiment
 
 csv.field_size_limit(sys.maxsize)
 
-def load_features(feature_store):
+def load_features(feature_store, is_blind):
     def _make_id(scanId, viewpointId):
         return scanId + '_' + viewpointId
 
@@ -37,12 +37,12 @@ def load_features(feature_store):
                 long_id = _make_id(item['scanId'], item['viewpointId'])
                 features[long_id] = np.frombuffer(base64.b64decode(item['features']),
                                                        dtype=np.float32).reshape((36, 2048))
+                if is_blind:
+                  print("Removing sight of agent :)")
+                  features[long_id] = np.rand((36, 2048), dtype=np.float32)
 
-                # Blind module
-                # features[long_id] = np.zeros((36, 2048), dtype=np.float32)
-                
-                # print_progress(i + 1, total_length, prefix='Progress:',
-                #                suffix='Complete', bar_length=50)
+                  print_progress(i + 1, total_length, prefix='Progress:',
+                                 suffix='Complete', bar_length=50)
     else:
         print('Image features not provided')
         features = None
@@ -72,7 +72,7 @@ class PanoEnvBatch():
             self.sims.append(sim)
 
     def _make_id(self, scanId, viewpointId):
-        return scanId + '_' + viewpointId   
+        return scanId + '_' + viewpointId
 
     def newEpisodes(self, scanIds, viewpointIds, headings):
         """ Iteratively initialize the simulators for # of batchsize"""
