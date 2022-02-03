@@ -38,8 +38,7 @@ def load_features(feature_store, is_blind):
                 features[long_id] = np.frombuffer(base64.b64decode(item['features']),
                                                        dtype=np.float32).reshape((36, 2048))
                 if is_blind:
-                  print("Removing sight of agent :)")
-                  features[long_id] = np.rand((36, 2048), dtype=np.float32)
+                  features[long_id] = np.random.rand(36, 2048)
 
                   print_progress(i + 1, total_length, prefix='Progress:',
                                  suffix='Complete', bar_length=50)
